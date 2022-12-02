@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-task2
+spec:
+  selector:
+    matchLabels:
+      app: python-task2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: python-task2
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: python-task2
+        image: ngdtrunguit/python-task2:1.6
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /app-data
+          name: python-task2-pv
+      volumes:
+      - name: python-task2-pv
+        persistentVolumeClaim:
+          claimName: python-task2-pvc
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: python-task2-vol
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteMany
+  hostPath:
+    path: "/data"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: python-task2-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-task2
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: python-task2
+  type: LoadBalancer

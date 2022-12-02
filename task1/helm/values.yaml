@@ -1,0 +1,16 @@
+image:
+  name: hello-world
+  tag: latest
+  registry: ngdtrunguit
+
+service:
+  port: 8000
+  targetPort: 8000
+
+deployment:
+  replicas: 1
+  depRegion:
+    de: de
+    es: es
+    fr: fr
+  default: en

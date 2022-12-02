@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<h1>Containers Monitoring Page</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+                <th>Container_Name</th>
+                <th>CPU_Usage</th>
+                <th>Memory_Usage</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pod in resource %}
+        {% set containers = pod['containers'] %}
+        {%for container in containers %}
+            <tr>
+                <td>{{ pod.metadata.name }}</td>
+                <td>{{ container['usage']['cpu'] }}</td>
+                <td>{{ container['usage']['memory'] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    {% endfor %}
+</table>

@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.name }}-{{ .Values.deployment.depRegion.de }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      svc-name: {{ .Values.image.name }}
+      region: {{ .Values.deployment.depRegion.de }}
+  template:
+    metadata:
+      labels:
+        svc-name: {{ .Values.image.name }}
+        region: {{ .Values.deployment.depRegion.de }}
+    spec:
+      containers:
+      - image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        name: {{ .Values.image.name }}-{{ .Values.deployment.depRegion.de }}
+        ports:
+          - containerPort: {{.Values.service.port}}
+        env:
+          - name: WORLD
+            value: "Fruend"
+          - name: REGION
+            value: "{{ .Values.deployment.depRegion.de }}"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.name }}-{{ .Values.deployment.depRegion.es }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      svc-name: {{ .Values.image.name }}
+      region: {{ .Values.deployment.depRegion.es }}
+  template:
+    metadata:
+      labels:
+        svc-name: {{ .Values.image.name }}
+        region: {{ .Values.deployment.depRegion.es }}
+    spec:
+      containers:
+      - image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        name: {{ .Values.image.name }}-{{ .Values.deployment.depRegion.es }}
+        ports:
+          - containerPort: {{.Values.service.port}}
+        env:
+          - name: WORLD
+            value: "Amigo"
+          - name: REGION
+            value: "{{ .Values.deployment.depRegion.es }}"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.name }}-{{ .Values.deployment.depRegion.fr }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      svc-name: {{ .Values.image.name }}
+      region: {{ .Values.deployment.depRegion.fr }}
+  template:
+    metadata:
+      labels:
+        svc-name: {{ .Values.image.name }}
+        region: {{ .Values.deployment.depRegion.fr }}
+    spec:
+      containers:
+      - image: {{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        name: {{ .Values.image.name }}-{{ .Values.deployment.depRegion.fr }}
+        ports:
+          - containerPort: {{.Values.service.port}}
+        env:
+          - name: WORLD
+            value: "Ami"
+          - name: REGION
+            value: "{{ .Values.deployment.depRegion.fr }}"
+
+
+
+
+

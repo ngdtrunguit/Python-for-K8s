@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: hello-world-destination
+spec:
+  host: hello-world.default.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+  subsets:
+  - name: de
+    labels:
+      region: de
+  - name: es
+    labels:
+      region: es
+  - name: fr
+    labels:
+      region: fr

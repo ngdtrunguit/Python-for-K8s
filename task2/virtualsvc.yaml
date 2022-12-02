@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: python-task2-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: python-task2
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - python-task2-gateway
+  http:
+  - name: "pods"
+    match:
+    - uri:
+        prefix: "/pods"
+    - uri:
+        prefix: "/cont"
+    route:
+    - destination:
+        host: python-task2
+        port:
+          number: 8080
+  - name: "home"
+    match:
+    - uri:
+        prefix: "/home"
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: python-task2
+        port:
+          number: 8080
